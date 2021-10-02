@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "fluid-fiber-326723",
+  "private_key_id": "3dd2e62680842c7a800c490205165745f18220d3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDT/0/RI2MeL+2L\nXC0ROcR6tpIyH2viG4trvN6y/o3bDl3Qszo5fS+hJ8ek8ez+utTFaslmAzb7VrW3\nAC4YgtY0FiBucRyT/dmaeB19HuUSFTUTo10W7SxypSFZpqRtRFn6ublseLPFKPk1\nAWliXIA5wQNsxz6W9C7PWhLLLxcsaEZg7b/6B4lfK/H0sM7V2vNLLJnu3IW00NwD\nO7DTNly9xxeJoAMhu0zY8172WFARLjQPd7BfqYThbVUKUny6ICG40asxSdxVUkTk\nnA7LEuklSEd6QiBKIQL3Dh9LUBSE6xHShGd8aJDFteOb5PsNpnQ++GLH7UCz6hHt\nP36QKbyHAgMBAAECggEABxw0nfm/6IP26HuEXFhQPotik8clX6bgNoab0JpqNapQ\nL9TfZkcGoT6o5o4Epc2VKzQ9uXGqy3VRuVwhxuyWRfPD2SY8fqNzcmq0/zbNu+6p\n4jIMyBdiw2KAWhMVU4XDCHKt7fsZ1j6XySCk21Vd48ZbJF5ujI+mHKFqtGcJseLw\ngEQ1QQv91mOStXygN2EDI+L2YIQAOOK+hYHIHHvb46Sv0ft8cmCo9vItp7Dbc/Kx\nw0+JmoJXi1WgXhTAgGN/Od2gZA6n/lWSsmrwGteprudQObHF8MpuDYa8RSnORD6Z\nYGAGuRkrDQUKF/4Zc/TT7nyI/TUkpfbRD5cqGDtVFQKBgQD3rNEy9oqD3bSMk/vU\nNpzcGrQHKNwkrkFOs2kLb4DCqH2Xt651+UCHj0PdDFNKTJyCZR5GOng1xrFSWPGg\nXRAvmz8Pe3xIa+sq5ZRcdRXdbKuALdMR8ZXVd2x3cMYpIQzoDQyCGqPwFBcuI3AA\natyppemxZjcyyPhxEnx6GJsVrQKBgQDbH38O9hOdyjB41jBF1+X5xvzL3Fswu0C2\n7h0tMOQOJyfsiHRF1oAxtNRJ6fsra4Slc6CvxXPQ6xGjUbfud+cgZpU9wLP/Kx/y\ndOqHkgXFxQWYL8yIGXh7VztAeXRe40sOcQ/r/B7vlW4Ad2GGWPqaqrS+/vahiFkT\nHp1ccubZgwKBgQCxOVEMhYvCJe+es/l79YQyn0z43o0AFkyW8xwUWboqEASmfoHw\n2uUI20P1NW+X98/6Ij8Sg54m5MFXqltjo5QEbLMn8fWRoN9K97I8om993NevRZsF\n+Pd9IxJTOTgikAq7NTMhGcz66nVXx3XKZqz1G8pn7TtMNLBJwK+fcmHulQKBgQC3\nx2TTcYPmVUvuLQZzra4OndwsRvacmpCeXHtQCa9cR27urUuHv23pQpbCH2Iveo/Y\nDHB6u4p1cJJsff9cHGhW/nKxRkww+URkH7cMWWZKBwK4L27Fv0cTe4gQfU0iwFOV\nGzKVY/G2U4fdEENVYI9e5UmO31yPAkJjDMxCW4RObQKBgQDnPmu9SQ0DBGB+KZx/\nucPAe7gItfQzIuAFFBuSHATzEnNngazdQK6asr64C6NQp3dTOjT7ZDNvtPgeAO+6\n86PrUEOwYET9JU56qPktkZcom/+JxCRuWl0vwwigT9Lu3RjRTJ2DG5ZG2CQapdoq\nVXrolkHnMN29gvHlKEKsQYOUtg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "dichosvoicetotext@fluid-fiber-326723.iam.gserviceaccount.com",
+  "client_id": "110374747533327020205",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dichosvoicetotext%40fluid-fiber-326723.iam.gserviceaccount.com"
+}
