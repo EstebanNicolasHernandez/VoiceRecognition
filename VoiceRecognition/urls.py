@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from speechToText.views import index, listado, contact, acerca_de, voz_a_texto
+
+from speechToText.views import index, listado, contact, acerca_de, audio_to_text, video_to_text
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,5 +24,6 @@ urlpatterns = [
     path('contacto/', contact),
     path('index/', index),
     path('listado/', listado),
-    path('vozATexto/', voz_a_texto, name="voz a texto"),
+    path('vozatexto/', audio_to_text, name="Voz a texto"),
+    path('videoatexto/', video_to_text, name="Video a texto"),
 ]

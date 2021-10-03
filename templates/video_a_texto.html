@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.88.1">
-    <title>Cover Template · Bootstrap v5.1</title>
+    <title>Video a Texto</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/cover/">
 
@@ -41,22 +41,20 @@
         <div>
             <h3 class="float-md-start mb-0">Base de Datos de Dichos Politicos</h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
-                <a class="nav-link active" aria-current="page" href="">Menu Principal</a>
-                <a class="nav-link" href="/vozatexto">Voz a Texto</a>
-                <a class="nav-link" href="/videoatexto">Video a Texto</a>
-                  <a class="nav-link" href="/listado">Listado de Dichos Politicos</a>
+                <a class="nav-link" href="/index">Menu Principal</a>
+                <a class="nav-link active" aria-current="page" href="/videoatexto">Video a Texto</a>
                 <a class="nav-link" href="#">Contacto</a>
             </nav>
         </div>
     </header>
 
-    <main class="px-3">
-        <h1>Cover your page.</h1>
-        <p class="lead">Bas de datos de dichos politicos.</p>
-        <p class="lead">
-            <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Acerca De</a>
-        </p>
-    </main>
+    <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <label>
+            <input class="input-group" type="text" name="video">
+        </label>
+        <button type="submit">Convertir video a Texto</button>
+    </form>
 
     <footer class="mt-auto text-white-50">
         <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a

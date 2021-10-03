@@ -54,6 +54,7 @@ def upload_to_bucket(attached_file, file_name):
     bucket = storage_client.get_bucket(bucket_name)
     blob = bucket.blob(attached_file.name)
     blob.upload_from_filename(file_name)
+    os.remove(file_name)
 
     return "gs://dichos-politicos-bucket/" + blob.public_url.split("/")[4]
 
