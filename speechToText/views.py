@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 
 from speechToText.models import Dicho
-from speechToText.google_voice import transcribe_file, transcribe_gcs,upload_to_bucket
-
+from speechToText.google_voice import transcribe_file, transcribe_gcs, upload_to_bucket
+from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 def acerca_de(request):
@@ -26,9 +26,12 @@ def listado(request):
 
 def voz_a_texto(request):
     if request.method == 'POST':
-        uploaded_file = request.FILES['attachInput']
-      #  transcribe_file(uploaded_file)
-        transcribe_gcs("gs://dichos-politicos-bucket/las-frases-mas-polemicas-de-alberto-fernandez.mp3")
-        print(uploaded_file)
+        attached_file = request.FILES['attachInput']
+        fs = FileSystemStorage()
+        filename = fs.save(attached_file.name, attached_file)
+        uploaded_file_url = fs.url(filename)
+        # transcribe_file(attached_file)
+        # upload_to_bucket(attached_file)
+        transcribe_gcs(upload_to_bucket(attached_file,fs.path(filename)))
+        print(attached_file)
     return render(request, "voz_a_texto.html")
-
