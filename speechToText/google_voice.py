@@ -45,16 +45,21 @@ def transcribe_file(speech_file):
 
 # Convierte un audio a texto.
 # Sube el archivo adjunto a un bucket de Google y retorna la URI de gsutil(La ruta de archivo del recurso en Cloud Storage).
-def upload_to_bucket(attached_file, file_name):
+def upload_to_bucket(attached_file, file_name, is_video):
     bucket_name = "dichos-politicos-bucket"
 
     storage_client = storage.Client.from_service_account_json(
         'dichos-politicos.json')
 
     bucket = storage_client.get_bucket(bucket_name)
-    blob = bucket.blob(attached_file.name)
-    blob.upload_from_filename(file_name)
-    os.remove(file_name)
+    if is_video:
+        blob = bucket.blob(file_name)
+        blob.upload_from_filename(file_name)
+        os.remove(file_name)
+    else:
+        blob = bucket.blob(attached_file.name)
+        blob.upload_from_filename(file_name)
+        os.remove(attached_file.name)
 
     return "gs://dichos-politicos-bucket/" + blob.public_url.split("/")[4]
 

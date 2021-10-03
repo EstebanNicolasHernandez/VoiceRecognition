@@ -56,6 +56,14 @@
         <button type="submit">Convertir video a Texto</button>
     </form>
 
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <footer class="mt-auto text-white-50">
         <p>Cover template for <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>, by <a
                 href="https://twitter.com/mdo" class="text-white">@mdo</a>.</p>
