@@ -2,8 +2,10 @@ from google.cloud import speech
 from google.cloud import storage
 import os
 
-
 # Ejemplo. Traduce un audio en la nube de google relacionado al puente de Brooklyn.
+from google.cloud.speech_v1 import RecognitionConfig
+
+
 def voice():
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'dichos-politicos.json'
     client = speech.SpeechClient()
@@ -65,14 +67,25 @@ def upload_to_bucket(attached_file, file_name, is_video):
 
 
 # Debe existir en el bucket de Google el archivo.
-def transcribe_gcs(gcs_uri):
+def transcribe_gcs(gcs_uri, interaction_type_input, device_type_input, microphone_distance):
     client = speech.SpeechClient()
 
     audio = speech.RecognitionAudio(uri=gcs_uri)
+
+    metadata = speech.RecognitionMetadata()
+    # metadata.interaction_type = speech.RecognitionMetadata.InteractionType.PRESENTATION
+    # metadata.microphone_distance = speech.RecognitionMetadata.MicrophoneDistance.MICROPHONE_DISTANCE_UNSPECIFIED
+    metadata.interaction_type = interaction_type(interaction_type_input)
+    metadata.microphone_distance = mic_distance(microphone_distance)
+    metadata.recording_device_type = device_type(device_type_input)
+    # metadata.recording_device_type = speech.RecognitionMetadata.RecordingDeviceType.OTHER_INDOOR_DEVICE
     config = speech.RecognitionConfig(
-        enable_automatic_punctuation=True,
-        sample_rate_hertz=42000,
+        encoding=speech.RecognitionConfig.AudioEncoding.ENCODING_UNSPECIFIED,
+        sample_rate_hertz=44100,
         language_code="es-AR",
+        use_enhanced=True,
+        audio_channel_count=2,
+        metadata=metadata,
     )
 
     operation = client.long_running_recognize(config=config, audio=audio)
@@ -83,41 +96,64 @@ def transcribe_gcs(gcs_uri):
         # The first alternative is the most likely one for this portion.
         print(u"Transcript: {}".format(result.alternatives[0].transcript))
         print("Confidence: {}".format(result.alternatives[0].confidence))
+    return response
 
 
-def speaker_diarization():
-    from google.cloud import speech_v1p1beta1 as diarization
+def mic_distance(microphone_distance):
+    if microphone_distance == 'intermedio':
+        return speech.RecognitionMetadata.MicrophoneDistance.MIDFIELD
+    elif microphone_distance == 'cerca':
+        return speech.RecognitionMetadata.MicrophoneDistance.NEARFIELD
+    elif microphone_distance == 'lejos':
+        return speech.RecognitionMetadata.MicrophoneDistance.FARFIELD
+    else:
+        return speech.RecognitionMetadata.MicrophoneDistance.MICROPHONE_DISTANCE_UNSPECIFIED
 
-    client = diarization.SpeechClient()
 
-    speech_file = "resources/commercial_mono.wav"
+def environment(environment_input):
+    if environment_input == 'intermedio':
+        return speech.RecognitionMetadata.MicrophoneDistance.MIDFIELD
+    elif environment_input == 'cerca':
+        return speech.RecognitionMetadata.MicrophoneDistance.NEARFIELD
+    elif environment_input == 'lejos':
+        return speech.RecognitionMetadata.MicrophoneDistance.FARFIELD
+    else:
+        return speech.RecognitionMetadata.MicrophoneDistance.MICROPHONE_DISTANCE_UNSPECIFIED
 
-    with open(speech_file, "rb") as audio_file:
-        content = audio_file.read()
 
-    audio = diarization.RecognitionAudio(content=content)
+def device_type(device_type_input):
+    if device_type_input == 'smartphone':
+        return speech.RecognitionMetadata.RecordingDeviceType.SMARTPHONE
+    if device_type_input == 'pc':
+        return speech.RecognitionMetadata.RecordingDeviceType.PC
+    if device_type_input == 'phone_line':
+        return speech.RecognitionMetadata.RecordingDeviceType.PHONE_LINE
+    if device_type_input == 'vehicle':
+        return speech.RecognitionMetadata.RecordingDeviceType.VEHICLE
+    if device_type_input == 'outdoor':
+        return speech.RecognitionMetadata.RecordingDeviceType.OTHER_OUTDOOR_DEVICE
+    if device_type_input == 'indoor':
+        return speech.RecognitionMetadata.RecordingDeviceType.OTHER_INDOOR_DEVICE
+    if device_type_input == 'unspecified':
+        return speech.RecognitionMetadata.RecordingDeviceType.RECORDING_DEVICE_TYPE_UNSPECIFIED
 
-    config = diarization.RecognitionConfig(
-        encoding=diarization.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=8000,
-        language_code="en-US",
-        enable_speaker_diarization=True,
-        diarization_speaker_count=2,
-    )
 
-    print("Waiting for operation to complete...")
-    response = client.recognize(config=config, audio=audio)
-
-    # The transcript within each result is separate and sequential per result.
-    # However, the words list within an alternative includes all the words
-    # from all the results thus far. Thus, to get all the words with speaker
-    # tags, you only have to take the words list from the last result:
-    result = response.results[-1]
-
-    words_info = result.alternatives[0].words
-
-    # Printing out the output:
-    for word_info in words_info:
-        print(
-            u"word: '{}', speaker_tag: {}".format(word_info.word, word_info.speaker_tag)
-        )
+def interaction_type(device_type_input):
+    if device_type_input == 'discussion':
+        return speech.RecognitionMetadata.InteractionType.DISCUSSION
+    if device_type_input == 'presentation':
+        return speech.RecognitionMetadata.InteractionType.PRESENTATION
+    if device_type_input == 'phone_call':
+        return speech.RecognitionMetadata.InteractionType.PHONE_CALL
+    if device_type_input == 'voicemail':
+        return speech.RecognitionMetadata.InteractionType.VOICEMAIL
+    if device_type_input == 'voice_search':
+        return speech.RecognitionMetadata.InteractionType.VOICE_SEARCH
+    if device_type_input == 'voice_command':
+        return speech.RecognitionMetadata.InteractionType.VOICE_COMMAND
+    if device_type_input == 'professional':
+        return speech.RecognitionMetadata.InteractionType.PROFESSIONALLY_PRODUCED
+    if device_type_input == 'dictation':
+        return speech.RecognitionMetadata.InteractionType.DICTATION
+    if device_type_input == 'unspecified':
+        return speech.RecognitionMetadata.InteractionType.INTERACTION_TYPE_UNSPECIFIED
