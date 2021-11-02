@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'VoiceRecognition.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dichos_politicos',
         'USER': 'root',
         'PASSWORD': 'Estu#180893',
