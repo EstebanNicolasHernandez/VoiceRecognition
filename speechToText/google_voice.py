@@ -45,8 +45,8 @@ def transcribe_file(speech_file):
         print("Reconocimiento de voz a texto: {}".format(result.alternatives[0].transcript))
 
 
-# Convierte un audio a texto.
-# Sube el archivo adjunto a un bucket de Google y retorna la URI de gsutil(La ruta de archivo del recurso en Cloud Storage).
+# Convierte un audio a texto. Sube el archivo adjunto a un bucket de Google y retorna
+# la URI de gsutil(La ruta de archivo del recurso en Cloud Storage).
 def upload_to_bucket(attached_file, file_name, is_video):
     bucket_name = "dichos-politicos-bucket"
 
@@ -73,12 +73,9 @@ def transcribe_gcs(gcs_uri, interaction_type_input, device_type_input, microphon
     audio = speech.RecognitionAudio(uri=gcs_uri)
 
     metadata = speech.RecognitionMetadata()
-    # metadata.interaction_type = speech.RecognitionMetadata.InteractionType.PRESENTATION
-    # metadata.microphone_distance = speech.RecognitionMetadata.MicrophoneDistance.MICROPHONE_DISTANCE_UNSPECIFIED
     metadata.interaction_type = interaction_type(interaction_type_input)
     metadata.microphone_distance = mic_distance(microphone_distance)
     metadata.recording_device_type = device_type(device_type_input)
-    # metadata.recording_device_type = speech.RecognitionMetadata.RecordingDeviceType.OTHER_INDOOR_DEVICE
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.ENCODING_UNSPECIFIED,
         sample_rate_hertz=44100,
@@ -92,10 +89,11 @@ def transcribe_gcs(gcs_uri, interaction_type_input, device_type_input, microphon
 
     print("Comenzando la traducción...")
     response = operation.result(timeout=90)
-    for result in response.results:
-        # The first alternative is the most likely one for this portion.
-        print(u"Transcript: {}".format(result.alternatives[0].transcript))
-        print("Confidence: {}".format(result.alternatives[0].confidence))
+    #
+    ##  for result in response.results:
+        #The first alternative is the most likely one for this portion.
+        #print(u"Transcript: {}".format(result.alternatives[0].transcript))
+        #print("Confidence: {}".format(result.alternatives[0].confidence))
     return response
 
 

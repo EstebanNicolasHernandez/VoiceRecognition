@@ -67,7 +67,14 @@
         </label>
         <br>
         <br>
+        <label>
+            Identificador
+            <input type="number" name="idInput">
+        </label>
+        <br>
+        <br>
         <button type="submit">Buscar</button>
+
     </form>
 
     {% if messages %}
@@ -77,6 +84,16 @@
             {% endfor %}
         </ul>
     {% endif %}
+
+
+    {% if politico %}
+        <table>
+            <tr>
+                <th>{{ politico.recognized_text }}</th>
+            </tr>
+        </table>
+    {% endif %}
+
 
     {% for listado in dichos %}
         <tr>

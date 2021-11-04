@@ -51,6 +51,60 @@
 
     <form enctype="multipart/form-data" method="POST">
         {% csrf_token %}
+
+        <label>
+            <b>Los metadatos sirven para poder mejorar la conversión a texto
+            </b>
+        </label>
+        <br>
+        <br>
+
+        <label for="interaction_type_input">Escoger un tipo de interacción</label>
+        <select id="interaction_type_input" name="interaction_type_input">
+            <option value="presentationire">Discusion</option>
+            <option value="presentation">Presentacion</option>
+            <option value="call_phone">Llamada telefónica</option>
+            <option value="record">Grabación de voz</option>
+            <option value="professional">Producción Profesional</option>
+            <option value="dictation">Dictado</option>
+            <option value="unspecified">No Especificado</option>
+        </select>
+
+        <br>
+        <br>
+
+        <label for="Dispositivo de Grabación">Escoger un dispositivo de grabación:</label>
+        <select id="device_type" name="device_input">
+            <option value="smartphone">Smartphone</option>
+            <option value="phone_line">Linea telefonica</option>
+            <option value="vehicle">Vehiculo</option>
+            <option value="pc">PC</option>
+            <option value="indoor">Interior</option>
+            <option value="outdoor">Exterior</option>
+            <option value="unspecified">No Especificado</option>
+        </select>
+
+        <br>
+        <br>
+
+        <label for="distancia">Distancia del microfono:</label>
+        <select id="distance_input" name="distance_input">
+            <option value="nearfield">Cerca</option>
+            <option value="midfield">Intermedio</option>
+            <option value="farfield">Lejos</option>
+            <option value="unspecified">No Especificado</option>
+        </select>
+
+        <br>
+        <br>
+
+        <label>
+            Autor
+            <input type="text" required name="authorInput">
+        </label>
+        <br>
+        <br>
+
         <label>
             <input class="input-group" type="text" name="video">
         </label>
