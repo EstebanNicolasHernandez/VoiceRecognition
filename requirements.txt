@@ -1,4 +1,6 @@
-django
 gunicorn
 django-heroku
 google-cloud-speech
+Django==3.2.7
+protobuf==3.19.1
+youtube_dl==2021.6.6
