@@ -1,7 +1,6 @@
 from django.contrib import messages
-from django.http import HttpResponse
+from django.core.paginator import PageNotAnInteger, EmptyPage, Paginator
 from django.shortcuts import render
-from django.db import transaction
 from django.utils.safestring import mark_safe
 
 from speechToText.models import Dicho
@@ -21,7 +20,15 @@ def index(request):
 
 def listado(request):
     dichos = Dicho.objects.all()
-    return render(request, "listado_de_dichos.html", {"dichos": dichos})
+    page = request.GET.get('page', 1)
+    paginator = Paginator(dichos, 10)
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        users = paginator.page(1)
+    except EmptyPage:
+        users = paginator.page(paginator.num_pages)
+    return render(request, "listado_de_dichos.html", {"dichos": users})
 
 
 def audio_to_text(request):
@@ -107,25 +114,30 @@ def busqueda_dicho_politico(request):
         if request.POST['idInput']:
             politico = Dicho.objects.get(id_table=request.POST['idInput'])
             messages.add_message(request, messages.INFO, mark_safe(
-                "<br/> <b>Autor:" + politico.author + "</b>"))
+                "<br/> <b>Autor:" + politico.author + "</b>" +
+                "<br/>  Texto:" + politico.recognized_text + "</b>"))
         else:
             if request.POST['authorInput'] and request.POST['fraseInput']:
                 politico = Dicho.objects.get(author=request.POST['authorInput'],
                                              recognized_text=request.POST['fraseInput'])
                 messages.add_message(request, messages.INFO, mark_safe(
-                    "<br/> <b>Autor:" + politico.author + "</b>"))
+                    "<br/> <b>Autor:" + politico.author +
+                    "<br/> Texto: " + politico.recognized_text))
+
             if request.POST['authorInput'] is not None and request.POST['fraseInput'] is None:
                 politico = Dicho.objects.get(recognized_text=request.POST['fraseInput'])
                 messages.add_message(request, messages.INFO, mark_safe(
                     "<br/> <b>Autor:" + politico.author + "</b>"))
+
             if request.POST['authorInput'] is None and request.POST[''] is not None:
                 politico = Dicho.objects.get(author=request.POST['authorInput'])
                 messages.add_message(request, messages.INFO, mark_safe(
                     "<br/> <b>Autor:" + politico.author + "</b>"))
+
             else:
                 messages.error(request, "No se encontraron resultados con los filtros utilizados.")
 
-    return render(request, "dicho_politico.html", {"politico": politico})
+    return render(request, "dicho_politico.html")
 
 
 def normalize(s):
