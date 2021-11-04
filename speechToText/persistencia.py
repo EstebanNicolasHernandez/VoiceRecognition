@@ -6,11 +6,14 @@ def insert_dicho_row(author):
     return Dicho.objects.create(file_id=last_id, author=author)
 
 
-def insert_file_row(attached_file, id_file):
+def insert_file_row(attached_file, id_file, isVideo):
     try:
         for chunk in attached_file.chunks():
             attached_file.write(chunk)
-        return File.objects.create(id_file=id_file, file_attached=chunk, file_type=attached_file.content_type)
+            if isVideo:
+                return File.objects.create(id_file=id_file, file_attached=chunk)
+            else:
+                return File.objects.create(id_file=id_file, file_attached=chunk, file_type=attached_file.content_type)
     except Exception as e:
         print(e)
 
