@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'VoiceRecognition.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dichos_politicos',
-        'USER': 'root',
-        'PASSWORD': 'Estu#180893',
-        'HOST': 'localhost',
-        'PORT': '3306'
+        'NAME': 'd53e0817cts6m3',
+        'USER': 'wogulfotckyuil',
+        'PASSWORD': '94096ab2fadd4ae542b9a8c5466ece900ed150dd6702de76f6f77497f8b4dd79',
+        'HOST': 'ec2-18-232-216-229.compute-1.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
