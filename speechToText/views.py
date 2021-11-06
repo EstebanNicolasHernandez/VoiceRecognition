@@ -32,7 +32,7 @@ def listado(request):
 
 
 def audio_to_text(request):
-    recognized_text = ''
+    texto = ''
     if request.method == 'POST':
         device_type = request.POST['device_input']
         microphone_distance = request.POST['distance_input']
@@ -40,25 +40,32 @@ def audio_to_text(request):
         attached_file = request.FILES['attachInput']
         author = request.POST['authorInput']
 
-        fs = FileSystemStorage()
-        filename = fs.save(attached_file.name, attached_file)
+        if 'audio' in request.FILES['attachInput'].content_type:
+            try:
+                fs = FileSystemStorage()
+                filename = fs.save(attached_file.name, attached_file)
 
-        dicho_to_update = insert_dicho_row(author)
-        file_to_update = insert_file_row(attached_file, dicho_to_update.file_id, False)
+                dicho_to_update = insert_dicho_row(author)
+                file_to_update = insert_file_row(attached_file, dicho_to_update.file_id, False)
 
-        gcs_uri = upload_to_bucket(attached_file, fs.path(filename), False)
+                gcs_uri = upload_to_bucket(attached_file, fs.path(filename), False)
 
-        update_file_table(file_to_update, gcs_uri)
+                update_file_table(file_to_update, gcs_uri)
 
-        res = transcribe_gcs(gcs_uri, interaction_type_input, device_type, microphone_distance)
+                res = transcribe_gcs(gcs_uri, interaction_type_input, device_type, microphone_distance)
 
-        for response in res.results:
-            recognized_text = recognized_text + response.alternatives[0].transcript
+                for response in res.results:
+                    texto = texto + response.alternatives[0].transcript
 
-        update_dicho_table(dicho_to_update, recognized_text)
-        messages.add_message(request, messages.INFO,
-                             "Conversión finalizada. Puede buscar el texto a través del ID: " + str(
-                                 dicho_to_update.id_table))
+                update_dicho_table(dicho_to_update, texto)
+                messages.add_message(request, messages.INFO,
+                                     "Conversión finalizada. Puede buscar el texto a través del ID: " + str(
+                                         dicho_to_update.id_table))
+            except Exception as e:
+                print("Hubo un error: ")
+                print(e)
+        else:
+            messages.error(request, str(" El archivo adjunto no es un audio."))
     return render(request, "voz_a_texto.html")
 
 

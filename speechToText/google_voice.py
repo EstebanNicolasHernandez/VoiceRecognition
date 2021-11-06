@@ -50,6 +50,7 @@ def transcribe_file(speech_file):
 def upload_to_bucket(attached_file, file_name, is_video):
     bucket_name = "dichos-politicos-bucket"
 
+    print("Subiendo archivo al bucket")
     storage_client = storage.Client.from_service_account_json(
         'dichos-politicos.json')
 
@@ -91,9 +92,9 @@ def transcribe_gcs(gcs_uri, interaction_type_input, device_type_input, microphon
     response = operation.result(timeout=90)
     #
     ##  for result in response.results:
-        #The first alternative is the most likely one for this portion.
-        #print(u"Transcript: {}".format(result.alternatives[0].transcript))
-        #print("Confidence: {}".format(result.alternatives[0].confidence))
+    # The first alternative is the most likely one for this portion.
+    # print(u"Transcript: {}".format(result.alternatives[0].transcript))
+    # print("Confidence: {}".format(result.alternatives[0].confidence))
     return response
 
 

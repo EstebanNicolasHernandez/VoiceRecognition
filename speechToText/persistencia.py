@@ -11,8 +11,10 @@ def insert_file_row(attached_file, id_file, isVideo):
         for chunk in attached_file.chunks():
             attached_file.write(chunk)
             if isVideo:
+                print("Creando registro en base de datos")
                 return File.objects.create(id_file=id_file, file_attached=chunk)
             else:
+                print("Creando registro en base de datos")
                 return File.objects.create(id_file=id_file, file_attached=chunk, file_type=attached_file.content_type)
     except Exception as e:
         print(e)
@@ -21,13 +23,16 @@ def insert_file_row(attached_file, id_file, isVideo):
 def update_file_table(update_row, uri):
     try:
         update_row.file_uri = uri
+        print("Updeteando tabla FILE")
         update_row.save()
     except Exception as e:
-        print(e + "Hubo un problema en el metodo update_file_table()")
+        print(e)
+        print("Hubo un problema en el metodo update_file_table()")
 
 
 def update_dicho_table(update_row, recognized_text):
     try:
+        print("Updteando tabla DICHOS")
         update_row.recognized_text = recognized_text
         update_row.save()
     except Exception as e:
