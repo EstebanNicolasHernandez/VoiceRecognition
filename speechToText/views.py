@@ -52,7 +52,7 @@ def audio_to_text(request):
 
                 update_file_table(file_to_update, gcs_uri)
 
-                res = transcribe_gcs(gcs_uri, interaction_type_input, device_type, microphone_distance)
+                res = transcribe_gcs(gcs_uri, interaction_type_input, device_type, microphone_distance, False)
 
                 for response in res.results:
                     texto = texto + response.alternatives[0].transcript
@@ -72,7 +72,7 @@ def audio_to_text(request):
 # Video a Texto. Primero convierte el video a mp3. Luego lo envia al bucket y lo borra del sistema,
 # retornando una URI para poder convertirla a texto.
 def video_to_text(request):
-    global recognized_text
+    texto = ''
     import youtube_dl
     from django.core.files.base import ContentFile
     fs = FileSystemStorage()
@@ -107,10 +107,14 @@ def video_to_text(request):
 
         # messages.add_message(request, messages.INFO, "Descarga completa {}".format(filename))
 
-        result = transcribe_gcs(gcs_uri, interaction_type_input, device_type, microphone_distance)
+        result = transcribe_gcs(gcs_uri, interaction_type_input, device_type, microphone_distance, True)
         for response in result.results:
-            recognized_text = recognized_text + response.alternatives[0].transcript
-            update_dicho_table(dicho_to_update, recognized_text)
+            texto = texto + response.alternatives[0].transcript
+            update_dicho_table(dicho_to_update, texto)
+
+        messages.add_message(request, messages.INFO,
+                             "Conversión finalizada. Puede buscar el texto a través del ID: " + str(
+                                 dicho_to_update.id_table))
 
     return render(request, "video_a_texto.html")
 
@@ -121,8 +125,8 @@ def busqueda_dicho_politico(request):
         if request.POST['idInput']:
             politico = Dicho.objects.get(id_table=request.POST['idInput'])
             messages.add_message(request, messages.INFO, mark_safe(
-                "<br/> <b>Autor:" + politico.author + "</b>" +
-                "<br/>  Texto:" + politico.recognized_text + "</b>"))
+                "<br/> <b> Autor: " + politico.author + "</b>" +
+                "<br/> <br/>  " + politico.recognized_text + "</b>"))
         else:
             if request.POST['authorInput'] and request.POST['fraseInput']:
                 politico = Dicho.objects.get(author=request.POST['authorInput'],
@@ -154,6 +158,12 @@ def normalize(s):
         ("í", "i"),
         ("ó", "o"),
         ("ú", "u"),
+        ("#", ""),
+        ("%", ""),
+        ("$", ""),
+        ("@", ""),
+        ("\"", ""),
+        (":", ""),
     )
     for a, b in replacements:
         s = s.replace(a, b)

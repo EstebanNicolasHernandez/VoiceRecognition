@@ -68,8 +68,15 @@ def upload_to_bucket(attached_file, file_name, is_video):
 
 
 # Debe existir en el bucket de Google el archivo.
-def transcribe_gcs(gcs_uri, interaction_type_input, device_type_input, microphone_distance):
+def transcribe_gcs(gcs_uri, interaction_type_input, device_type_input, microphone_distance, isVideo):
     client = speech.SpeechClient()
+
+    sample = 44100
+    audio_channel = 2
+    if isVideo:
+        sample = 48000
+        audio_channel = 1
+
 
     audio = speech.RecognitionAudio(uri=gcs_uri)
 
@@ -77,19 +84,20 @@ def transcribe_gcs(gcs_uri, interaction_type_input, device_type_input, microphon
     metadata.interaction_type = interaction_type(interaction_type_input)
     metadata.microphone_distance = mic_distance(microphone_distance)
     metadata.recording_device_type = device_type(device_type_input)
+
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.ENCODING_UNSPECIFIED,
-        sample_rate_hertz=44100,
+        sample_rate_hertz=sample,
         language_code="es-AR",
         use_enhanced=True,
-        audio_channel_count=2,
+        audio_channel_count=audio_channel,
         metadata=metadata,
     )
 
     operation = client.long_running_recognize(config=config, audio=audio)
 
     print("Comenzando la traducción...")
-    response = operation.result(timeout=90)
+    response = operation.result()
     #
     ##  for result in response.results:
     # The first alternative is the most likely one for this portion.
@@ -112,9 +120,9 @@ def mic_distance(microphone_distance):
 def environment(environment_input):
     if environment_input == 'intermedio':
         return speech.RecognitionMetadata.MicrophoneDistance.MIDFIELD
-    elif environment_input == 'cerca':
+    if environment_input == 'cerca':
         return speech.RecognitionMetadata.MicrophoneDistance.NEARFIELD
-    elif environment_input == 'lejos':
+    if environment_input == 'lejos':
         return speech.RecognitionMetadata.MicrophoneDistance.FARFIELD
     else:
         return speech.RecognitionMetadata.MicrophoneDistance.MICROPHONE_DISTANCE_UNSPECIFIED
